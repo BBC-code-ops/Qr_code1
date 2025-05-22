@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CipherHunt Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      background: #222;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      width: 100%;
+      max-width: 500px;
+    }
+    input[type="text"], input[type="password"] {
+      padding: 10px;
+      width: 100%;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: #28a745;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+      width: 100%;
+    }
+    .passage, .question, .answerBox, .riddleSection {
+      display: none;
+      margin-top: 20px;
+    }
+    .no-copy {
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+    h2, h3 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    p, label {
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    @media screen and (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      button {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="loginSection">
+      <h2>Tech Vistara Login</h2>
+      <input type="text" id="username" placeholder="Team ID">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+    </div>
+
+    <div class="passage no-copy" id="passage">
+      <h3>The Locked Diary1 - Passage </h3>
+      <p>The Discovery
+        Jake found his older brother's diary locked in a desk drawer, with a small note taped to the cover 
+        that read: "To open this, solve my favorite word puzzle. The code is PUZZLE, but
+         remember our old rule: add up all the letters like we used to (A=1, B=2, etc.), 
+          Only then 
+         will you have the combination to my lock." Jake smiled, remembering how they used 
+         to create secret codes as kids, always using the alphabet-to-number system where each 
+         letter had a value equal to its position in the alphabet. </p>
+      <button onclick="showQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question">
+      <h3>Question</h3>
+      <p>Using the word PUZZLE, convert each letter to its numerical value (A=1, B=2, C=3, etc.),
+         add them all together,</p>
+      <label><input type="radio" name="mcq" value="A">109</label><br>
+      <label><input type="radio" name="mcq" value="B"> 96</label><br>
+      <label><input type="radio" name="mcq" value="C"> 106</label><br>
+      <label><input type="radio" name="mcq" value="D"> 105</label><br>
+      <button onclick="checkMCQ()">Submit MCQ</button>
+    </div>
+
+    <div class="answerBox" id="answerBox">
+      <h3>Enter Your Answer </h3>
+      <input type="text" id="binaryAnswer" placeholder="enter the answer here">
+      <button onclick="submitAnswer()">Submit</button>
+    </div>
+
+    <div class="riddleSection" id="riddleSection">
+      <h3>🎉 Correct!</h3>
+      <p>Here’s your next riddle:</p>
+      <p><em>"I have keys but no locks, space but no rooms, you can enter but can’t go outside. What am I?"</em></p>
+    </div>
+  </div>
+
+  <script>
+    let attemptCount = 0;
+
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if (username === "100" && password === "423") {
+        document.querySelector('.loginSection').style.display = 'none';
+        document.getElementById('passage').style.display = 'block';
+      } else {
+        alert("Invalid login");
+      }
+    }
+
+    function showQuestion() {
+      document.getElementById('passage').style.display = 'none';
+      document.getElementById('question').style.display = 'block';
+    }
+
+    function checkMCQ() {
+      const selected = document.querySelector('input[name="mcq"]:checked');
+      if (!selected) {
+        alert("Select an option");
+        return;
+      }
+      if (selected.value === "C") {
+        document.getElementById('question').style.display = 'none';
+        document.getElementById('answerBox').style.display = 'block';
+      } else {
+        alert("Wrong answer. Try again.");
+      }
+    }
+
+    function submitAnswer() {
+      const answer = document.getElementById('binaryAnswer').value.trim();
+      const correctAnswer = "106";
+
+      if (answer === correctAnswer) {
+        document.getElementById('answerBox').style.display = 'none';
+        document.getElementById('riddleSection').style.display = 'block';
+      } else {
+        attemptCount++;
+        if (attemptCount >= 2) {
+          alert("You are disqualified.");
+          location.reload();
+        } else {
+          alert("Wrong answer. 1 attempt left.");
+        }
+      }
+    }
+
+    // Disable right click and copy/paste
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('copy', e => e.preventDefault());
+    document.addEventListener('cut', e => e.preventDefault());
+    document.addEventListener('paste', e => e.preventDefault());
+  </script>
+</body>
+</html>
